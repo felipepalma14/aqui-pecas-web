@@ -1,0 +1,34 @@
+<div class="widgets" ng-controller="produtoListagemCtrl">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div ba-panel ba-panel-title="Editable Rows" ba-panel-class="with-scroll">
+        <div class="horizontal-scroll">
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="black-muted-bg">
+                            <th class="align-right">Marca</th>
+                            <th class="table-arr"></th>
+                            <th class="align-right">Modelo</th>
+                            <th class="table-arr"></th>
+                            <th class="align-right">Ano</th>
+                            <th class="table-arr"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in metricsTableData" class="no-top-border">
+                           
+                            <td class="align-right">{{item.visits}}</td>
+                            <td class="table-arr"><i ng-class="{'icon-up': item.isVisitsUp, 'icon-down': !item.isVisitsUp }"></i></td>
+                            <td class="align-right">{{item.purchases}}</td>
+                            <td class="table-arr"><i ng-class="{'icon-up': item.isPurchasesUp, 'icon-down': !item.isPurchasesUp }"></i></td>
+                            <td class="align-right">{{item.percent}}</td>
+                            <td class="table-arr"><i ng-class="{'icon-up': item.isPercentUp, 'icon-down': !item.isPercentUp }"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+      </div>
+    </div>
+  </div>
+
