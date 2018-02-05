@@ -5,7 +5,7 @@
     .controller('produtoCadastroCtrl', produtoCadastroCtrl);
 
   /** @ngInject */
-  function produtoCadastroCtrl($scope,$rootScope, $state,fileReader, $filter,APIService) {
+  function produtoCadastroCtrl($scope,$rootScope, $state,fileReader, $filter,APIService,FIPEService) {
     /*
       Iniciando variaves de Scope
     */
@@ -36,7 +36,12 @@
     };
 
     $scope.categorias = APIService.getCategorias();
-    console.log($scope.categorias);
+    FIPEService.getMarcasFIPE().success(function(dados){
+      $scope.marcas = dados;
+      console.log(dados);
+    })
+
+    console.log($scope.marcas);
 
     $scope.removePicture = function () {
       $scope.picture = $filter('appImage')('theme/no-photo.png');

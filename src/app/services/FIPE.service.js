@@ -3,7 +3,7 @@
     angular
         .module('BlurAdmin.pages.produto')
         .factory('FIPEService', FIPEService);
-    FIPEService.$inject = ['$http', '$cookies', '$rootScope','$firebaseArray','$firebaseObject'];
+    FIPEService.$inject = ['$http', '$rootScope','$firebaseArray','$firebaseObject'];
     function FIPEService($http, $cookies, $rootScope, $firebaseArray,$firebaseObject) {
     	var URL_FIPE = "https://fipe.parallelum.com.br/api/v1/";
         var service = {

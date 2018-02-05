@@ -1,5 +1,6 @@
 <div class="widgets" ng-controller="produtoCadastroCtrl">
     <div class="row">
+      {{ marcas }}
         <div class="col-md-12">
             <div ba-panel ba-panel-title="Cadastro de Produto" ba-panel-class="with-scroll">
                 <ba-wizard>
@@ -102,8 +103,8 @@
                                             <ui-select-match placeholder="Pesquise a marca">
                                                 {{$select.selected.label}}
                                             </ui-select-match>
-                                            <ui-select-choices repeat="withSearchItem in selectpickerVm.selectWithSearchItems | filter: $select.search">
-                                                <span ng-bind-html="withSearchItem.label"></span>
+                                            <ui-select-choices repeat="marca in marcas | filter: $select.search">
+                                                <span ng-bind-html="marca.nome"></span>
                                             </ui-select-choices>
                                         </ui-select>
                                     </div>
