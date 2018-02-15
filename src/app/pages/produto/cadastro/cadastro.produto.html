@@ -1,6 +1,5 @@
 <div class="widgets" ng-controller="produtoCadastroCtrl">
     <div class="row">
-      {{ marcas }}
         <div class="col-md-12">
             <div ba-panel ba-panel-title="Cadastro de Produto" ba-panel-class="with-scroll">
                 <ba-wizard>
@@ -16,7 +15,7 @@
                                     <div>
                                         <div class="form-group ">
                                             <label>Categoria</label>
-                                            <ui-select ng-model="categoria.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
+                                            <ui-select ng-model="categoria.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" >
                                                 <ui-select-match placeholder="Pesquise a categoria">
                                                     {{$select.selected.categoria}}
                                                 </ui-select-match>
@@ -90,53 +89,54 @@
                                     </div>
                                 </div>
                             </div>
-                            <pre>{{ teste  | json}}</pre>
                         </form>
                     </ba-wizard-step>
                     <ba-wizard-step title="Compatibilidade" form="vm.productInfoForm">
+                      {{ carro | json}}
                         <form name="vm.productInfoForm" novalidate>
                             <div class="row" style="margin-left: 125px">
                                 <div class="col-md-3">
                                     <div class="form-group ">
                                         <label>Marca</label>
-                                        <ui-select ng-model="selectpickerVm.withSearchItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
-                                            <ui-select-match placeholder="Pesquise a marca">
-                                                {{$select.selected.label}}
+                                        <ui-select ng-model="marcaSelecionada" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="onMarcaSelected(marcaSelecionada)">
+                                            <ui-select-match placeholder="Pesquise a marca" >
+                                                {{ marcaSelecionada.nome }}
                                             </ui-select-match>
                                             <ui-select-choices repeat="marca in marcas | filter: $select.search">
                                                 <span ng-bind-html="marca.nome"></span>
                                             </ui-select-choices>
-                                        </ui-select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group ">
-                                        <label>Marca</label>
-                                        <ui-select ng-model="selectpickerVm.withSearchItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
-                                            <ui-select-match placeholder="Pesquise o Modelo">
-                                                {{$select.selected.label}}
-                                            </ui-select-match>
-                                            <ui-select-choices repeat="withSearchItem in selectpickerVm.selectWithSearchItems | filter: $select.search">
-                                                <span ng-bind-html="withSearchItem.label"></span>
-                                            </ui-select-choices>
+
                                         </ui-select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group ">
                                         <label>Modelo</label>
-                                        <ui-select ng-model="selectpickerVm.withSearchItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
-                                            <ui-select-match placeholder="Pesquise o ano">
-                                                {{$select.selected.label}}
+                                        <ui-select ng-model="modeloSelecionado" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="onModeloSelected(modeloSelecionado)">
+                                            <ui-select-match placeholder="Pesquise o Modelo">
+                                                {{ modeloSelecionado.nome }}
                                             </ui-select-match>
-                                            <ui-select-choices repeat="withSearchItem in selectpickerVm.selectWithSearchItems | filter: $select.search">
-                                                <span ng-bind-html="withSearchItem.label"></span>
+                                            <ui-select-choices repeat="modelo in modelos | filter: $select.search">
+                                                <span ng-bind-html="modelo.nome"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group ">
+                                        <label>Ano</label>
+                                        <ui-select ng-model="carro.ano" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
+                                            <ui-select-match placeholder="Pesquise o ano">
+                                                {{$select.selected.nome}}
+                                            </ui-select-match>
+                                            <ui-select-choices repeat="ano in anos | filter: $select.search">
+                                                <span ng-bind-html="ano.nome"></span>
                                             </ui-select-choices>
                                         </ui-select>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="button-wrapper">
-                                            <button type="button" class="btn btn-primary btn-raised">Adicionar</button>
+                                            <button type="button" class="btn btn-primary btn-raised" ng-click="addCarro(carro)">Adicionar</button>
                                         </div>
                                     </div>
                                 </div>

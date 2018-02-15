@@ -11,6 +11,9 @@
     */
     $scope.categoria = {};
     $scope.novoProduto = {};
+    $scope.carro = {};
+
+    $scope.carros = [];
 
     $scope.precoSlider = {
       inicial: 0,
@@ -36,12 +39,36 @@
     };
 
     $scope.categorias = APIService.getCategorias();
+
     FIPEService.getMarcasFIPE().success(function(dados){
       $scope.marcas = dados;
       console.log(dados);
-    })
+    });
 
-    console.log($scope.marcas);
+    //
+    $scope.onMarcaSelected = function(item){
+      //alert(item);
+      FIPEService.getModelosFIPE(item).success(function(dados){
+        //console.log(dados.modelos);
+        $scope.modelos=dados.modelos;
+
+        $scope.carro.marca = item;
+      });
+    }
+
+    $scope.onModeloSelected = function(itemModelo){
+      $scope.carro.modelo = itemModelo;
+      FIPEService.getAnosFIPE($scope.carro.marca,$scope.carro.modelo).success(function(dados){
+        console.log(dados);
+        $scope.anos  = dados;
+      });
+    }
+
+    $scope.addCarro = function(item){
+      $scope.carros.push(item);
+      alert("Adicionado");
+    }
+
 
     $scope.removePicture = function () {
       $scope.picture = $filter('appImage')('theme/no-photo.png');

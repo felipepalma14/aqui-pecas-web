@@ -33,7 +33,6 @@
         AuthenticationService.Logout();
         $state.transitionTo("autenticar");
       }
-      console.log(login);
       if (toState.authenticate && login == null) {
         // User isn’t authenticated
         $state.transitionTo("autenticar");

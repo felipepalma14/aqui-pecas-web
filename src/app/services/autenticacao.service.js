@@ -6,7 +6,7 @@
         .factory('AuthenticationService', AuthenticationService);
 
     AuthenticationService.$inject = ['$http','$window','$rootScope', '$timeout','$firebaseAuth'];
-    function AuthenticationService($http,$window,$rootScope, $timeout,$firebaseAuth) {
+    function AuthenticationService($http,$window,$rootScope, $timeout,$firebaseAuth,$firebaseObject) {
         var service = {};
         
         service.Login = Login;
@@ -33,7 +33,10 @@
                     photoURL: usuarioInfor.imagem,       // <- URL from uploaded photo.
                     displayName: usuarioInfor.empresa
                 }).then(function(){
-                    
+                    var refEmpresa = firebase.database().ref().child('empresas/' + userUID.uid);
+                    refEmpresa.set(
+                          usuarioInfor
+                        );
                 });
                 Reautenticar();
 

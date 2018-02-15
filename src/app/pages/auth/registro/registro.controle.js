@@ -5,16 +5,22 @@
     .controller('registroCtrl', registroCtrl);
 
   /** @ngInject */
-  function registroCtrl($scope,$state,mapService,$timeout,fileReader, 
-  						$filter,$window,AuthenticationService) {
+  function registroCtrl($scope,$state,mapService,$timeout,fileReader,$filter,$window,AuthenticationService) {
     $scope.local = {};
     $scope.novoUsuario = {};
 
     $scope.registrar= function(){
+      $scope.novoUsuario.getPos = {'lat': mapService.markers[0].position.lat(),
+                            'lng': mapService.markers[0].position.lng()};
+      console.log($scope.novoUsuario);
+      
     	AuthenticationService.Registro($scope.novoUsuario,function(retorno){
     		// trabalhar retorno callback - "novoUsuario"
     		alert("Usuario Cadastrado: " + retorno);
+        console.log(retorno);
+        $state.transitionTo("dashboard");
     	});
+      
     };
 
      $scope.removePicture = function () {
@@ -36,22 +42,22 @@
     $scope.imageUpload = function(element){
           var reader = new FileReader();
           reader.onload = $scope.imageIsLoaded;
-          console.log(element.target.files[0])
           reader.readAsDataURL(element.target.files[0]);
           
     };
 
     $scope.pesquisarLocal = function(local) {
+        /*
+          REDIRECIONA POSIÇÃO DO MAPA
+        */
         $scope.apiError = false;
         mapService.search(local)
         .then(
             function(res) { // success
-                mapService.addMarker(res);
-                $scope.local.nome = res.name;
-                $scope.local.lat = res.geometry.location.lat();
-                $scope.local.lng = res.geometry.location.lng();
-                $scope.novoUsuario.getPos = {'lat': res.geometry.location.lat(),
-            								'lng': res.geometry.location.lng()};
+                mapService.redirecionar(res);
+
+                //console.log(mapService.markers.length);
+                
                
             },
             function(status) { // error
@@ -60,6 +66,7 @@
             }
         );
     };
+
 
     $timeout(function(){
       mapService.init();

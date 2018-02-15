@@ -9,11 +9,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in metricsTableData">
-      <td><img ng-src="{{::( item.image | appImage )}}" width="20" height="20"></td>
-      <td ng-class="nowrap">{{item.browser}}</td>
-      <td ng-class="nowrap">{{item.visits}}</td>
-      <td class="align-right">{{item.purchases}}</td>
+    <tr ng-repeat="item in carros">
+      <td ng-class="nowrap">{{item.marca.nome}}</td>
+      <td ng-class="nowrap">{{item.modelo.nome}}</td>
+      <td class="align-right">{{item.ano.nome}}</td>
       <td class="align-right">Remover</td>
     </tr>
     </tbody>
