@@ -12,7 +12,7 @@
     var vm = this;
     vm.novoProduto = {};
     vm.novoProduto.imagem = $filter('appImage')('theme/no-photo.png');
-    
+
     $scope.categoria = {};
     $scope.novoProduto = {};
     $scope.carro = {};
@@ -54,7 +54,6 @@
 
     FIPEService.getMarcasFIPE().success(function(dados){
       $scope.marcas = dados;
-      console.log(dados);
     });
 
     //
@@ -71,14 +70,25 @@
     $scope.onModeloSelected = function(itemModelo){
       $scope.carro.modelo = itemModelo;
       FIPEService.getAnosFIPE($scope.carro.marca,$scope.carro.modelo).success(function(dados){
-        console.log(dados);
         $scope.anos  = dados;
       });
     }
 
     $scope.addCarro = function(item){
-      $scope.carros.push(item);
+      var carro = {};
+      carro.marca = item.marca;
+      carro.modelo = item.modelo;
+      carro.ano = item.ano;
+      
+      $scope.carros.push(carro);
       alert("Adicionado");
+    }
+
+    $scope.removeCarro = function(index){
+      
+      $scope.carros.splice(index, 1);
+      console.log(index);
+      alert("Removido");
     }
 
 

@@ -13,7 +13,9 @@
       <td ng-class="nowrap">{{item.marca.nome}}</td>
       <td ng-class="nowrap">{{item.modelo.nome}}</td>
       <td class="align-right">{{item.ano.nome}}</td>
-      <td class="align-right">Remover</td>
+      <td class="align-right" >
+        <button ng-click="removeCarro($item)">Remover</button>
+      </td>
     </tr>
     </tbody>
   </table>

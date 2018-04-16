@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div ba-panel ba-panel-title="Cadastro de Produto" ba-panel-class="with-scroll">
                 <ba-wizard>
-                    <ba-wizard-step title="Informações do Produto" form="vm.produtoForm">
+                    <ba-wizard-step title="Informações do Produto" form="vm.produtoForm2">
                         <form name="vm.produtoForm" novalidate>
                             <div class="row">
                                 <div class="col-md-6">
@@ -76,13 +76,13 @@
                             </div>
                         </form>
                     </ba-wizard-step>
-                    <ba-wizard-step title="Compatibilidade" form="vm.productInfoForm">
+                    <ba-wizard-step title="Compatibilidade" form="vm.productInfoForm3">
                         <form ng-submit="cadastrarProduto()" novalidate>
                             <div class="row" style="margin-left: 125px">
                                 <div class="col-md-3">
                                     <div class="form-group ">
                                         <label>Marca</label>
-                                        <ui-select ng-model="marcaSelecionada" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="onMarcaSelected(marcaSelecionada)">
+                                        <ui-select ng-model="marcaSelecionada" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="onMarcaSelected($item)">
                                             <ui-select-match placeholder="Pesquise a marca" >
                                                 {{ marcaSelecionada.nome }}
                                             </ui-select-match>

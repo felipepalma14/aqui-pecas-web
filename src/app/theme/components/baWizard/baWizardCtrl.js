@@ -11,30 +11,29 @@
 
     vm.tabNum = 0;
 
-    
+        
 
     vm.addTab = function(tab) {
       tab.setPrev(vm.tabs[vm.tabs.length - 1]);
       vm.tabs.push(tab);
       vm.selectTab(0);
+
       vm.progress =  ((vm.tabNum + 1) / vm.tabs.length) * 100;
       vm.ultimaTab = vm.tabs.length -1;
     };
 
     $scope.$watch(angular.bind(vm, function () {return vm.tabNum;}), calcProgress);
 
-    vm.selectTab = function (tabNum) {
-      
-      
+    vm.selectTab = function (tabNum) {      
       if (vm.tabs[tabNum].isAvailiable()) {
         vm.tabNum = tabNum;
         vm.tabs.forEach(function (t, tIndex) {
           tIndex == vm.tabNum ? t.select(true) : t.select(false);
         });
-        if(vm.tabNum == vm.ultimaTab){
-          console.log("ultimaTab");
-          vm.tabs[vm.tabNum].submit();
+        if(vm.isLastTab() && (vm.tabs.length > 1)){
+          console.log("ultimo");
         }
+
       }
     };
 
