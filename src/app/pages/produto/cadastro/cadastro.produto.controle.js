@@ -9,6 +9,10 @@
     /*
       Iniciando variaves de Scope
     */
+    var vm = this;
+    vm.novoProduto = {};
+    vm.novoProduto.imagem = $filter('appImage')('theme/no-photo.png');
+    
     $scope.categoria = {};
     $scope.novoProduto = {};
     $scope.carro = {};
@@ -19,6 +23,14 @@
       inicial: 0,
       final: 2000,
     };
+
+    $scope.selCategoria = function(item){
+      vm.novoProduto.categoria = item;
+    }
+
+    $scope.$watch('vm.novoProduto', function() {
+      console.log(vm.novoProduto);
+    },vm.novoProduto);
 
     $scope.checkUP = function(valor){
       console.log(valor);
@@ -71,7 +83,7 @@
 
 
     $scope.removePicture = function () {
-      $scope.picture = $filter('appImage')('theme/no-photo.png');
+      vm.novoProduto.imagem = $filter('appImage')('theme/no-photo.png');
       $scope.noPicture = true;
     };
 
@@ -82,7 +94,7 @@
     };  
     $scope.imageIsLoaded = function(e){
            $scope.$apply(function() {
-            $scope.picture = e.target.result;
+            vm.novoProduto.imagem = e.target.result;
            });
         }
 
@@ -93,6 +105,11 @@
           reader.readAsDataURL(element.target.files[0]);
           
     };
+
+    $scope.cadastrarProduto = function(){
+      console.log("teste");
+
+    }
 
   }
 

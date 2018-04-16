@@ -5,7 +5,7 @@
         .factory('FIPEService', FIPEService);
     FIPEService.$inject = ['$http', '$rootScope','$firebaseArray','$firebaseObject'];
     function FIPEService($http, $cookies, $rootScope, $firebaseArray,$firebaseObject) {
-    	var URL_FIPE = "https://fipe.parallelum.com.br/api/v1/";
+    	var URL_FIPE = "https://parallelum.com.br/fipe/api/v1/";
         var service = {
     		getMarcasFIPE : function getMarcasFIPE(){
     			return $http.get(URL_FIPE + "carros/marcas");                        

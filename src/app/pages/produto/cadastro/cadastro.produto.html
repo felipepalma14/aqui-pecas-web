@@ -1,21 +1,21 @@
-<div class="widgets" ng-controller="produtoCadastroCtrl">
+<div class="widgets">
     <div class="row">
         <div class="col-md-12">
             <div ba-panel ba-panel-title="Cadastro de Produto" ba-panel-class="with-scroll">
                 <ba-wizard>
-                    <ba-wizard-step title="Informações do Produto" form="vm.personalInfoForm">
-                        <form name="vm.personalInfoForm" novalidate>
+                    <ba-wizard-step title="Informações do Produto" form="vm.produtoForm">
+                        <form name="vm.produtoForm" novalidate>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group has-feedback" ng-class="{'has-error': vm.personalInfoForm.username.$invalid && (vm.personalInfoForm.username.$dirty || vm.personalInfoForm.$submitted)}">
-                                        <label for="exampleUsername1">Nome do Produto</label>
-                                        <input type="text" class="form-control" id="exampleUsername1" name="username" placeholder="Nome do produto" ng-model="novoProduto.nome" required>
+                                    <div class="form-group has-feedback" ng-class="{'has-error': vm.produtoForm.nome.$invalid && (vm.produtoForm.nome.$dirty || vm.produtoForm.$submitted)}">
+                                        <label for="nome">Nome do Produto</label>
+                                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do produto" ng-model="vm.novoProduto.nome" required>
                                         <span class="help-block error-block basic-block">Required</span>
                                     </div>
                                     <div>
                                         <div class="form-group ">
                                             <label>Categoria</label>
-                                            <ui-select ng-model="categoria.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" >
+                                            <ui-select ng-model="vm.novoProduto.categoria" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="selCategoria($item)" >
                                                 <ui-select-match placeholder="Pesquise a categoria">
                                                     {{$select.selected.categoria}}
                                                 </ui-select-match>
@@ -27,7 +27,7 @@
                                     </div>
                                     <div class="checkbox">
                                         <label class="custom-checkbox">
-                                            <input type="checkbox" ng-model="novoProduto.isDisponivel">
+                                            <input type="checkbox" ng-model="vm.novoProduto.isDisponivel">
                                             <span>Disponivel</span>
                                         </label>
                                     </div>
@@ -38,7 +38,7 @@
                                                 <div class="col-sm-9">
                                                     <div class="userpic">
                                                         <div class="userpic-wrapper">
-                                                            <img ng-src="{{ picture }}" ng-click="uploadPicture()">
+                                                            <img ng-src="{{ vm.novoProduto.imagem }}" ng-click="uploadPicture()">
                                                         </div>
                                                         <i class="ion-ios-close-outline" ng-click="removePicture()" ng-if="!noPicture"></i>
                                                         <a href class="change-userpic" ng-click="uploadPicture()">Alterar imagem do Produto</a>
@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group" ng-class="{'has-error': vm.personalInfoForm.password.$invalid && (vm.personalInfoForm.password.$dirty || vm.personalInfoForm.$submitted)}">
                                         <label for="exampleInputPassword1">Nº de Referência</label>
-                                        <input type="text" class="form-control" id="exampleInputPassword1" name="password" placeholder="Referência" ng-model="novoProduto.referencia" required>
+                                        <input type="text" class="form-control" id="exampleInputPassword1" name="password" placeholder="Referência" ng-model="vm.novoProduto.referencia" required>
                                         <span class="help-block error-block basic-block">Required</span>
                                     </div>
                                     <div class="slider-box">
@@ -60,7 +60,7 @@
                                         <input 
                                           ion-range-slider
                                           apply="apply" range-options="{min:0, max: 2000}"
-                                          ng-model="novoProduto.preco"
+                                          ng-model="vm.novoProduto.preco"
                                           type="single"
                                           grid="true"
                                           prefix="R$ "
@@ -68,32 +68,16 @@
                                           disable="false">
                                         </input>
                                     </div>
-                                    <!--<div class="slider-box">
-                                        <h5>Preço (Opcional)</h5>
-                                        <ion-slider 
-                                          ng-model="teste"
-                                          type="single"
-                                          grid="true"
-                                          min="0"
-                                          max="2000"
-                                          prefix="R$ "
-                                          on-finish="checkUP()"
-                                          from="precoSlider.inicial"
-                                          to="precoSlider.final"
-                                          disable="false">
-                                        </ion-slider>
-                                    </div>-->
                                     <div class="form-group">
                                         <label for="textarea01">Descrição</label>
-                                        <textarea placeholder="Descreva a peça aqui.." ng-model="novoProduto.descricao" class="form-control" id="textarea01" style="margin: 0px -4.5px 0px 0px; width: 520px; height: 163px;"></textarea>
+                                        <textarea placeholder="Descreva a peça aqui.." ng-model="vm.novoProduto.descricao" class="form-control" id="textarea01" style="margin: 0px -4.5px 0px 0px; width: 520px; height: 163px;"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </ba-wizard-step>
                     <ba-wizard-step title="Compatibilidade" form="vm.productInfoForm">
-                      {{ carro | json}}
-                        <form name="vm.productInfoForm" novalidate>
+                        <form ng-submit="cadastrarProduto()" novalidate>
                             <div class="row" style="margin-left: 125px">
                                 <div class="col-md-3">
                                     <div class="form-group ">
@@ -149,7 +133,7 @@
                         </form>
                     </ba-wizard-step>
                     <ba-wizard-step title="Finalizar">
-                        <form class="form-horizontal" name="vm.finishForm" novalidate>
+                        <form class="form-horizontal"  novalidate>
                             Produto cadastrado com sucesso!!!
                         </form>
                     </ba-wizard-step>
