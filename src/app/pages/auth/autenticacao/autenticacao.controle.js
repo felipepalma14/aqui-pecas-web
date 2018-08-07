@@ -18,15 +18,29 @@
 
     function logar(email,senha) {
       AuthenticationService.Login(email,senha, function(resposta){
-        if(resposta.uid){
+        if(resposta.hasOwnProperty("code")){
+          if(resposta.code === "auth/user-not-found"){
+          alert("Usuario não cadastrado!!");
+          }
+          if(resposta.code === "auth/wrong-password"){
+            alert("Usuario não cadastrado ou senha invalida");
+          }  
+        }
+        
+        if(resposta.hasOwnProperty("empresa")){
           //console.log(resposta);
-          alert("Seja Bem Vindo: " + resposta.email );
-          AuthenticationService.GetCurrentUser();
-          
-          $rootScope.currentUser = AuthenticationService.currentUser;
+          alert("Seja Bem Vindo: " + resposta.empresa);
+          $rootScope.currentUser = resposta;
           $state.go('dashboard');
-        }else{
-          alert(resposta.message);
+        }
+        if(resposta){
+          //console.log(resposta);
+          alert("Seja Bem Vindo: " + "Administrador");
+          $rootScope.currentUser = resposta;
+          $state.go('dashboard');
+        }
+        else{
+          alert("Usuario não cadastrado ou senha invalida");
         }
       });
     }

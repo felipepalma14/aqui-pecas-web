@@ -5,12 +5,14 @@
     .controller('produtoCadastroCtrl', produtoCadastroCtrl);
 
   /** @ngInject */
-  function produtoCadastroCtrl($scope,$rootScope, $state,fileReader, $filter,APIService,FIPEService) {
+  function produtoCadastroCtrl($scope,$rootScope, $state,fileReader,$firebaseStorage,$filter,APIService,FIPEService) {
     /*
       Iniciando variaves de Scope
     */
     var vm = this;
     vm.novoProduto = {};
+
+ 
     vm.novoProduto.imagem = $filter('appImage')('theme/no-photo.png');
 
     $scope.categoria = {};
@@ -28,27 +30,6 @@
       vm.novoProduto.categoria = item;
     }
 
-    $scope.$watch('vm.novoProduto', function() {
-      console.log(vm.novoProduto);
-    },vm.novoProduto);
-
-    $scope.checkUP = function(valor){
-      console.log(valor);
-    };
-
-    $scope.$watch('precoSlider', function(newValue, oldValue, scope) {
-      console.log(scope);
-      console.log(newValue);
-    });
-    //FIM
-
-    $scope.atualiza= function(){
-      console.log("teste");
-    };
-
-    function atualiza(){
-      console.log("teste");
-    };
 
     $scope.categorias = APIService.getCategorias();
 
@@ -111,13 +92,16 @@
     $scope.imageUpload = function(element){
           var reader = new FileReader();
           reader.onload = $scope.imageIsLoaded;
-          console.log(element.target.files[0])
           reader.readAsDataURL(element.target.files[0]);
           
     };
 
-    $scope.cadastrarProduto = function(){
-      console.log("teste");
+    vm.cadastrarProduto = function(produto){
+      //APIService.addProduto(produto,function(){
+
+      //});
+      vm.feedback = "Produto cadastrado com sucesso!!!";
+      console.log(produto);
 
     }
 

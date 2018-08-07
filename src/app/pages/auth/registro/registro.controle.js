@@ -10,6 +10,11 @@
     $scope.novoUsuario = {};
 
     $scope.registrar= function(){
+     /* if($scope.novoUsuario.senha != $scope.confirmaSenha){
+        alert("Verifique sua senha");
+        return 
+      }
+      */
       $scope.novoUsuario.getPos = {'lat': mapService.markers[0].position.lat(),
                             'lng': mapService.markers[0].position.lng()};
       console.log($scope.novoUsuario);

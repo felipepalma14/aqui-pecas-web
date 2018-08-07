@@ -17,27 +17,20 @@
         return service;
 
         function GetCurrentUser(){
-            for(var key in $window.localStorage){
-                if(key.startsWith("firebase:authUser")){
-                    var localStorageObject = $window.localStorage.getItem(key);
-                    service.currentUser = JSON.parse(localStorageObject);
-                }
-            }
+            
+            var localStorageObject = $window.localStorage.getItem("usuarioSis");
+            service.currentUser = JSON.parse(localStorageObject);
+                
+            
         }
        
         function Registro(usuarioInfor,callback) {
             var auth = $firebaseAuth();
             auth.$createUserWithEmailAndPassword(usuarioInfor.email,usuarioInfor.senha)
             .then(function(userUID) {
-                userUID.updateProfile({
-                    photoURL: usuarioInfor.imagem,       // <- URL from uploaded photo.
-                    displayName: usuarioInfor.empresa
-                }).then(function(){
-                    var refEmpresa = firebase.database().ref().child('empresas/' + userUID.uid);
-                    refEmpresa.set(
-                          usuarioInfor
-                        );
-                });
+                var refEmpresa = firebase.database().ref().child('empresas/' + userUID.uid);
+                refEmpresa.set(usuarioInfor);
+                
                 Reautenticar();
 
                 callback(userUID);
@@ -52,12 +45,30 @@
 
         function Login(email,senha,callback) {
             var auth = $firebaseAuth();
+
             auth.$signInWithEmailAndPassword(email, senha)
                 .then(function(authData) {
-                    service.currentUser = authData;
+                    // guarda o estado o usuario principal do sistema
+                    console.log(authData);
                     $rootScope.user = {'email':email,'senha':senha};
-                    console.log($rootScope.user);
-                    callback(authData);
+
+                    var ref = firebase.database().ref();
+                    if(authData.hasOwnProperty("email")){
+                        service.currentUser = authData;
+                        $window.localStorage.setItem('usuarioSis', JSON.stringify(authData));
+                        callback(authData);
+                    }
+                    ref.child("empresas/"+authData.uid)
+                    .on("value",function(snap){
+                        if(snap.val() !==null){
+                            var retorno = snap.val(); 
+                            service.currentUser = retorno;
+                            $window.localStorage.setItem('usuarioSis', JSON.stringify(retorno));
+                            callback(retorno); 
+                        }
+                        
+                    });
+                    //callback(authData);
 
                 }).catch(function(error) {
                     callback(error);
@@ -72,7 +83,7 @@
 
             auth.$signOut().then(function() {
               service.currentUser = null;
-              //$window.localStorage.clear();
+              $window.localStorage.clear();
               $window.location.reload();
               //callback(service.currentUser);
 
