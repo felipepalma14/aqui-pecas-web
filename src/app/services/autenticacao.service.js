@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('BlurAdmin.pages.autenticacao')
+        .module('BlurAdmin.pages.servicos')
         .factory('AuthenticationService', AuthenticationService);
 
     AuthenticationService.$inject = ['$http','$window','$rootScope', '$timeout','$firebaseAuth'];
@@ -19,7 +19,7 @@
         function GetCurrentUser(){
             
             var localStorageObject = $window.localStorage.getItem("usuarioSis");
-            service.currentUser = JSON.parse(localStorageObject);
+            return JSON.parse(localStorageObject);
                 
             
         }
@@ -28,6 +28,7 @@
             var auth = $firebaseAuth();
             auth.$createUserWithEmailAndPassword(usuarioInfor.email,usuarioInfor.senha)
             .then(function(userUID) {
+                usuarioInfor['uid'] = userUID.uid;
                 var refEmpresa = firebase.database().ref().child('empresas/' + userUID.uid);
                 refEmpresa.set(usuarioInfor);
                 
@@ -50,21 +51,26 @@
                 .then(function(authData) {
                     // guarda o estado o usuario principal do sistema
                     console.log(authData);
-                    $rootScope.user = {'email':email,'senha':senha};
 
                     var ref = firebase.database().ref();
-                    if(authData.hasOwnProperty("email")){
-                        service.currentUser = authData;
-                        $window.localStorage.setItem('usuarioSis', JSON.stringify(authData));
-                        callback(authData);
-                    }
+
                     ref.child("empresas/"+authData.uid)
                     .on("value",function(snap){
                         if(snap.val() !==null){
                             var retorno = snap.val(); 
+
+                            retorno['isAdmin'] = false;
                             service.currentUser = retorno;
                             $window.localStorage.setItem('usuarioSis', JSON.stringify(retorno));
+                            $rootScope.user = {'email':email,'senha':senha, 'isAdmin': false};
+
                             callback(retorno); 
+                        }else{
+                            authData['isAdmin'] = true;
+                            service.currentUser = authData;
+                            $rootScope.currentUser = {'email':email,'senha':senha, 'isAdmin': true};
+                            $window.localStorage.setItem('usuarioSis', JSON.stringify(authData));
+                            callback(authData);
                         }
                         
                     });

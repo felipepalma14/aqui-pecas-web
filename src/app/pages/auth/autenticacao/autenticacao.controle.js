@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('BlurAdmin.pages.autenticacao')
+  angular.module('BlurAdmin.pages.usuario')
     .controller('autenticacaoCtrl', autenticacaoCtrl);
 
   /** @ngInject */
@@ -18,7 +18,9 @@
 
     function logar(email,senha) {
       AuthenticationService.Login(email,senha, function(resposta){
+        console.log(resposta);
         if(resposta.hasOwnProperty("code")){
+          console.log(resposta.code);
           if(resposta.code === "auth/user-not-found"){
           alert("Usuario não cadastrado!!");
           }
@@ -33,15 +35,13 @@
           $rootScope.currentUser = resposta;
           $state.go('dashboard');
         }
-        if(resposta){
+        if(!resposta.hasOwnProperty("empresa")){
           //console.log(resposta);
           alert("Seja Bem Vindo: " + "Administrador");
           $rootScope.currentUser = resposta;
           $state.go('dashboard');
         }
-        else{
-          alert("Usuario não cadastrado ou senha invalida");
-        }
+
       });
     }
 

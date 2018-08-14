@@ -10,12 +10,13 @@
       'ui.router',
       'ui.mask',
       'BlurAdmin.pages.dashboard',
-      'BlurAdmin.pages.ui',
-      'BlurAdmin.pages.form',
-      'BlurAdmin.pages.tables',
+      'BlurAdmin.pages.servicos',
+      //'BlurAdmin.pages.ui',
+      //'BlurAdmin.pages.form',
+      //'BlurAdmin.pages.tables',
       'BlurAdmin.pages.profile',
-      'BlurAdmin.pages.autenticacao',
-      'BlurAdmin.pages.registro',
+      'BlurAdmin.pages.usuario',
+      //'BlurAdmin.pages.registro',
       'BlurAdmin.pages.produto',
       
 
@@ -26,16 +27,16 @@
   /** @ngInject */
    function stateChangeStart($rootScope, $state, AuthenticationService) {
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-      AuthenticationService.GetCurrentUser();
-      var login = AuthenticationService.currentUser;
+      
+      var login = AuthenticationService.GetCurrentUser();
       $rootScope.currentUser = login;
       $rootScope.logout = function(){
         AuthenticationService.Logout();
-        $state.transitionTo("autenticar");
+        $state.transitionTo("usuario.autenticar");
       }
       if (toState.authenticate && login == null) {
         // User isn’t authenticated
-        $state.transitionTo("autenticar");
+        $state.transitionTo("usuario.autenticar");
         event.preventDefault();
       }
     });
@@ -43,7 +44,7 @@
 
   function routeConfig($urlRouterProvider, baSidebarServiceProvider) {
     $urlRouterProvider.otherwise('/dashboard');
-
+    /*
     baSidebarServiceProvider.addStaticItem({
       title: 'Pages',
       icon: 'ion-document',
@@ -64,6 +65,7 @@
         blank: true
       }]
     });
+    */
   };
 
 })();

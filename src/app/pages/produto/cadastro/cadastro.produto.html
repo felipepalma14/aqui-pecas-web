@@ -15,11 +15,11 @@
                                     <div>
                                         <div class="form-group ">
                                             <label>Categoria</label>
-                                            <ui-select ng-model="vm.novoProduto.categoria" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="selCategoria($item)" >
+                                            <ui-select ng-model="vm.novoProduto.categoria" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="vm.selCategoria($item)" >
                                                 <ui-select-match placeholder="Pesquise a categoria">
                                                     {{$select.selected.categoria}}
                                                 </ui-select-match>
-                                                <ui-select-choices repeat="item in categorias | filter: $select.search">
+                                                <ui-select-choices repeat="item in vm.categorias | filter: $select.search">
                                                     <span ng-bind-html="item.categoria"></span>
                                                 </ui-select-choices>
                                             </ui-select>
@@ -38,10 +38,10 @@
                                                 <div class="col-sm-9">
                                                     <div class="userpic">
                                                         <div class="userpic-wrapper">
-                                                            <img ng-src="{{ vm.novoProduto.imagem }}" ng-click="uploadPicture()">
+                                                            <img ng-src="{{ vm.novoProduto.imagem }}" ng-click="vm.uploadPicture()">
                                                         </div>
-                                                        <i class="ion-ios-close-outline" ng-click="removePicture()" ng-if="!noPicture"></i>
-                                                        <a href class="change-userpic" ng-click="uploadPicture()">Alterar imagem do Produto</a>
+                                                        <i class="ion-ios-close-outline" ng-click="vm.removePicture()" ng-if="!noPicture"></i>
+                                                        <a href class="change-userpic" ng-click="vm.uploadPicture()">Alterar imagem do Produto</a>
                                                         <input type="file" ng-show="false" id="uploadFile" onchange="angular.element(this).scope().imageUpload(event)" />
                                                     </div>
                                                 </div>
@@ -64,7 +64,7 @@
                                           type="single"
                                           grid="true"
                                           prefix="R$ "
-                                          on-finish="checkUP()"
+                                          on-finish="vm.checkUP()"
                                           disable="false">
                                         </input>
                                     </div>
@@ -82,11 +82,11 @@
                                 <div class="col-md-3">
                                     <div class="form-group ">
                                         <label>Marca</label>
-                                        <ui-select ng-model="marcaSelecionada" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="onMarcaSelected($item)">
+                                        <ui-select ng-model="vm.marcaSelecionada" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="vm.onMarcaSelected($item)">
                                             <ui-select-match placeholder="Pesquise a marca" >
-                                                {{ marcaSelecionada.nome }}
+                                                {{ vm.marcaSelecionada.nome }}
                                             </ui-select-match>
-                                            <ui-select-choices repeat="marca in marcas | filter: $select.search">
+                                            <ui-select-choices repeat="marca in vm.marcas | filter: $select.search">
                                                 <span ng-bind-html="marca.nome"></span>
                                             </ui-select-choices>
 
@@ -96,11 +96,11 @@
                                 <div class="col-md-3">
                                     <div class="form-group ">
                                         <label>Modelo</label>
-                                        <ui-select ng-model="modeloSelecionado" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="onModeloSelected(modeloSelecionado)">
+                                        <ui-select ng-model="vm.modeloSelecionado" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true" on-select="vm.onModeloSelected(vm.modeloSelecionado)">
                                             <ui-select-match placeholder="Pesquise o Modelo">
-                                                {{ modeloSelecionado.nome }}
+                                                {{ vm.modeloSelecionado.nome }}
                                             </ui-select-match>
-                                            <ui-select-choices repeat="modelo in modelos | filter: $select.search">
+                                            <ui-select-choices repeat="modelo in vm.modelos | filter: $select.search">
                                                 <span ng-bind-html="modelo.nome"></span>
                                             </ui-select-choices>
                                         </ui-select>
@@ -109,24 +109,24 @@
                                 <div class="col-md-3">
                                     <div class="form-group ">
                                         <label>Ano</label>
-                                        <ui-select ng-model="carro.ano" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
+                                        <ui-select ng-model="vm.carro.ano" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
                                             <ui-select-match placeholder="Pesquise o ano">
                                                 {{$select.selected.nome}}
                                             </ui-select-match>
-                                            <ui-select-choices repeat="ano in anos | filter: $select.search">
+                                            <ui-select-choices repeat="ano in vm.anos | filter: $select.search">
                                                 <span ng-bind-html="ano.nome"></span>
                                             </ui-select-choices>
                                         </ui-select>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="button-wrapper">
-                                            <button type="button" class="btn btn-primary btn-raised" ng-click="addCarro(carro)">Adicionar</button>
+                                            <button type="button" class="btn btn-primary btn-raised" ng-click="vm.addCarro(vm.carro)">Adicionar</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-10">
                                     <div ba-panel ba-panel-title="Veiculos Compativeis" ba-panel-class="with-scroll table-panel">
-                                        <div include-with-scope="app/pages/tables/widgets/borderedTable.html"></div>
+                                        <div include-with-scope="app/pages/produto/listagem/borderedTable.html"></div>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@
                     <ba-wizard-step title="Finalizar">
                         <form  class="form-horizontal"  novalidate>
                             <div class="text-center">
-                                <h3>{{ feedback }}</h3>
+                                <h3>{{ vm.feedback }}</h3>
                                 <button ng-click="vm.cadastrarProduto(vm.novoProduto)" type="button" class=" btn btn-primary">
                                     <span aria-hidden="true">&larr;</span> Submeter
                                 </button>

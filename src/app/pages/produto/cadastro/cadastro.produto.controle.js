@@ -15,70 +15,71 @@
  
     vm.novoProduto.imagem = $filter('appImage')('theme/no-photo.png');
 
-    $scope.categoria = {};
-    $scope.novoProduto = {};
-    $scope.carro = {};
+    vm.categoria = {};
+    vm.novoProduto = {};
+    vm.carro = {};
 
-    $scope.carros = [];
+    vm.carros = [];
 
-    $scope.precoSlider = {
+    vm.precoSlider = {
       inicial: 0,
       final: 2000,
     };
 
-    $scope.selCategoria = function(item){
+    vm.selCategoria = function(item){
       vm.novoProduto.categoria = item;
     }
 
 
-    $scope.categorias = APIService.getCategorias();
+    vm.categorias = APIService.getCategorias();
 
     FIPEService.getMarcasFIPE().success(function(dados){
-      $scope.marcas = dados;
+      vm.marcas = dados;
     });
 
     //
-    $scope.onMarcaSelected = function(item){
+    vm.onMarcaSelected = function(item){
       //alert(item);
       FIPEService.getModelosFIPE(item).success(function(dados){
         //console.log(dados.modelos);
-        $scope.modelos=dados.modelos;
+        vm.modelos=dados.modelos;
 
-        $scope.carro.marca = item;
+        vm.carro.marca = item;
       });
     }
 
-    $scope.onModeloSelected = function(itemModelo){
-      $scope.carro.modelo = itemModelo;
-      FIPEService.getAnosFIPE($scope.carro.marca,$scope.carro.modelo).success(function(dados){
-        $scope.anos  = dados;
+    vm.onModeloSelected = function(itemModelo){
+      vm.carro.modelo = itemModelo;
+      FIPEService.getAnosFIPE(vm.carro.marca,vm.carro.modelo).success(function(dados){
+        vm.anos  = dados;
       });
     }
 
-    $scope.addCarro = function(item){
+    vm.addCarro = function(item){
+      console.log(item);
       var carro = {};
       carro.marca = item.marca;
       carro.modelo = item.modelo;
       carro.ano = item.ano;
       
-      $scope.carros.push(carro);
+      vm.carros.push(carro);
       alert("Adicionado");
     }
 
-    $scope.removeCarro = function(index){
+    vm.removeCarro = function(index){
       
-      $scope.carros.splice(index, 1);
+      vm.carros.splice(index, 1);
       console.log(index);
       alert("Removido");
     }
 
 
-    $scope.removePicture = function () {
+    vm.removePicture = function () {
       vm.novoProduto.imagem = $filter('appImage')('theme/no-photo.png');
       $scope.noPicture = true;
     };
 
-    $scope.uploadPicture = function () {
+    vm.uploadPicture = function () {
       var fileInput = document.getElementById('uploadFile');
       fileInput.click();
 
@@ -97,10 +98,13 @@
     };
 
     vm.cadastrarProduto = function(produto){
-      //APIService.addProduto(produto,function(){
-
-      //});
-      vm.feedback = "Produto cadastrado com sucesso!!!";
+      APIService.addProduto(produto,function(retorno){
+        console.log(retorno);
+        if(retorno != null){
+          vm.feedback = "Produto cadastrado com sucesso!!!";
+        }
+      });
+      
       console.log(produto);
 
     }

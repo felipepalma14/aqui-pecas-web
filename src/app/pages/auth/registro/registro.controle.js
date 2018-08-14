@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('BlurAdmin.pages.registro')
+  angular.module('BlurAdmin.pages.usuario')
     .controller('registroCtrl', registroCtrl);
 
   /** @ngInject */

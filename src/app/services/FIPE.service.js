@@ -1,7 +1,7 @@
 (function () {
     'use strict';
     angular
-        .module('BlurAdmin.pages.produto')
+        .module('BlurAdmin.pages.servicos')
         .factory('FIPEService', FIPEService);
     FIPEService.$inject = ['$http', '$rootScope','$firebaseArray','$firebaseObject'];
     function FIPEService($http, $cookies, $rootScope, $firebaseArray,$firebaseObject) {

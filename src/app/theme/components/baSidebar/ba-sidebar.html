@@ -3,7 +3,7 @@
   <ul class="al-sidebar-list" slimscroll="{height: '{{menuHeight}}px'}" slimscroll-watch="menuHeight" >
     <li ng-repeat="item in ::menuItems" class="al-sidebar-list-item"
         ng-class="::{'with-sub-menu': item.subMenu}" ui-sref-active="selected"
-        ba-sidebar-toggling-item="item">
+        ba-sidebar-toggling-item="item" ng-hide="::item.title=='Usuário' && $root.currentUser.isadmin == false">
 
       <a ng-mouseenter="hoverItem($event, item)" ui-state="item.stateRef || ''" ng-href="{{::(item.fixedHref ? item.fixedHref: '')}}" ng-if="::!item.subMenu" class="al-sidebar-list-link">
         <i class="{{ ::item.icon }}"></i><span>{{ ::item.title }}</span>
@@ -19,7 +19,7 @@
       <ul ng-if="::item.subMenu" class="al-sidebar-sublist"
           ng-class="{'slide-right': item.slideRight}"
           ba-ui-sref-toggling-submenu>
-        <li ng-repeat="subitem in ::item.subMenu" ng-class="::{'with-sub-menu': subitem.subMenu}" ui-sref-active="selected"
+        <li ng-repeat="subitem in ::item.subMenu" ng-class="::{'with-sub-menu': subitem.subMenu}" ui-sref-active="selected" ng-hide="::subitem.title=='Autenticar'"
             ba-sidebar-toggling-item="subitem" class="ba-sidebar-sublist-item">
           <a ng-mouseenter="hoverItem($event, item)" ng-if="::subitem.subMenu" ba-ui-sref-toggler
              class="al-sidebar-list-link subitem-submenu-link"><span>{{ ::subitem.title }}</span>

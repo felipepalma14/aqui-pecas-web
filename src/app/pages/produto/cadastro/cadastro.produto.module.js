@@ -9,14 +9,14 @@
 			.state('produto.cadastro',{
 				url: '/cadastro',
 		        templateUrl: 'app/pages/produto/cadastro/cadastro.produto.html',
-		        title: 'Cadastro de Produtos',
+		        title: 'Cadastro',
 		        controller: 'produtoCadastroCtrl',
 		        controllerAs: 'vm',
 		        sidebarMeta: {
 		          order: 100,
 		          icon: 'ion-gear-a',
 		        },
-		        authenticate: false
+		        authenticate: true
 		    });
 		
 	}

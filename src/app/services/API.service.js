@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('BlurAdmin.pages.produto')
+        .module('BlurAdmin.pages.servicos')
         .factory('APIService', APIService);
 
     APIService.$inject = ['$http', '$rootScope','AuthenticationService',
@@ -128,6 +128,7 @@
                 });
             },
            
+            /*
             addProduto: function addProduto(produto,callback){
                 var produtos = this.getProdutos();
                 var keyCategoria = {};
@@ -181,6 +182,50 @@
                             });
                         });
                 }
+            },*/
+            addProduto: function addProduto(produto,callback){
+                var produtos = this.getProdutos();
+                var keyCategoria = {};
+                console.log(produto.categoria);
+                keyCategoria[produto.categoria.$id] = true;
+                produto.categoria = keyCategoria;
+                produtos.$add({
+                    nome            : produto.nome,
+                    imagem          : produto.imagem,
+                    referencia      : produto.referencia,
+                    categoria       : produto.categoria,
+                    data_criacao    : firebase.database.ServerValue.TIMESTAMP
+                    }).then(function(result){
+                        console.log(result);
+                        var produtoEmpresaRef = $firebaseArray(ref.child("produtoEmpresa"));
+                        var produtoEmpresa = {};
+                        produtoEmpresa['nome']       = produto.nome;
+                        produtoEmpresa['imagem']     = produto.imagem;
+                        produtoEmpresa['referencia'] = produto.referencia;
+                        produtoEmpresa['categoria']  = produto.categoria;
+                        produtoEmpresa['empresaKey'] = AuthenticationService.GetCurrentUser().uid;
+                        produtoEmpresa['data_atualizacao'] = firebase.database.ServerValue.TIMESTAMP;
+                        produtoEmpresa['descricao']  = produto.descricao;
+                        produtoEmpresa['produtoKey'] = result.key;
+                        produtoEmpresa['isdisponivel'] = produto.isDisponivel;
+                        produtoEmpresa['preco']      = produto.preco;
+
+                        console.log(produto);
+
+                        var produtosRef = ref.child('produtos/' + result.key + '/empresas');
+                        var produtosRefArray = $firebaseArray(produtosRef);
+                        //TESTE ADD KEY EMPRESA em PRODUTO
+                        //produtosRefArray.$add(AuthenticationService.currentUser.uid);
+                           
+                        produtoEmpresaRef
+                            .$add(produtoEmpresa)
+                            .then(function(keyProdutoEmpresa){  
+                                console.log(keyProdutoEmpresa)    
+                                callback(keyProdutoEmpresa.key);
+
+                        });
+                    });
+                
             },
             pecasPorEmpresa: function pecasPorEmpresa(empresaKey,callback){
                 ref.child('produtoEmpresa').on('value',function(dataSnapshotProdutos){

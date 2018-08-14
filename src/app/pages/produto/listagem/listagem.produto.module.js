@@ -15,7 +15,7 @@
 		          order: 100,
 		          icon: 'ion-gear-a',
 		        },
-		        authenticate: false
+		        authenticate: true
 		    });
 		
 	}

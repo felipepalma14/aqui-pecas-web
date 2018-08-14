@@ -9,12 +9,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in vmcarros">
+    <tr ng-repeat="item in vm.carros">
       <td ng-class="nowrap">{{item.marca.nome}}</td>
       <td ng-class="nowrap">{{item.modelo.nome}}</td>
       <td class="align-right">{{item.ano.nome}}</td>
       <td class="align-right" >
-        <button ng-click="removeCarro($item)">Remover</button>
+        <button class="btn btn-danger btn-raised"  ng-click="vm.removeCarro($item)">Remover</button>
       </td>
     </tr>
     </tbody>

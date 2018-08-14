@@ -1,6 +1,6 @@
 (function(){
 	angular
-		.module('BlurAdmin.pages.registro')
+		.module('BlurAdmin.pages.servicos')
 		.factory('mapService', function($q) {
         
         var gmaps = {};
