@@ -125,17 +125,31 @@
          apply: '=apply'
       },
       link: function (scope, elem, attrs) {
+         scope.$watch('model',function () {
+            console.log(scope.rangeOptions);
+            elem.ionRangeSlider(scope.rangeOptions);
+            var slider = elem.data("ionRangeSlider");
+            slider.update({
+               from: scope.model,
+            });
+         });
+      }
+      /*
+      link: function (scope, elem, attrs) {
          elem.ionRangeSlider(scope.rangeOptions);
+
          scope.$watch('apply',function () {
           if (scope.apply) {
             scope.apply = false;
-            var slider = elem.data("ionRangeSlider");            
+            var slider = elem.data("ionRangeSlider"); 
+
             slider.update({
-               from: scope.model
+               from: scope.model,
             });
           }
          });
       }
+      */
    }
  }
 })();

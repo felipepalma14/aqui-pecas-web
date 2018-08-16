@@ -4,7 +4,8 @@
 	angular
 		.module('BlurAdmin.pages.produto', [
 			'BlurAdmin.pages.produto.cadastro',
-			'BlurAdmin.pages.produto.listagem'])
+			'BlurAdmin.pages.produto.listagem',
+			'BlurAdmin.pages.produto.detalhes'])
 		.config(routeConfig);
 	function routeConfig($stateProvider){
 		$stateProvider

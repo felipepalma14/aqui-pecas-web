@@ -1,0 +1,22 @@
+<div class="horizontal-scroll">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Marca</th>
+      <th>Modelo</th>
+      <th>Ano</th>
+      <th>Ação</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in carros">
+      <td ng-class="nowrap">{{item.marca.nome}}</td>
+      <td ng-class="nowrap">{{item.modelo.nome}}</td>
+      <td class="align-right">{{item.ano.nome}}</td>
+      <td class="align-right" >
+        <button class="btn btn-danger btn-raised"  ng-click="removeCarro($item)">Remover</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

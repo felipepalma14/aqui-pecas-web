@@ -16,8 +16,7 @@
         service.currentUser = null;
         return service;
 
-        function GetCurrentUser(){
-            
+        function GetCurrentUser(){            
             var localStorageObject = $window.localStorage.getItem("usuarioSis");
             return JSON.parse(localStorageObject);
                 

@@ -1,6 +1,6 @@
 <div class="widgets" ng-controller="produtoListagemCtrl">
 
-  <div class="row">
+  <!--<div class="row">
     <div class="col-md-12">
       <div ba-panel ba-panel-title="Editable Rows" ba-panel-class="with-scroll">
         <div class="horizontal-scroll">
@@ -31,4 +31,53 @@
       </div>
     </div>
   </div>
+-->
+    <div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <div >
+                <div class="col-sm-6 col-md-4" ng-repeat="item in resultado">
+                <div class="thumbnail parent" > 
+                    <img src="{{ item.imagem }}" class="img-responsive">
+                    <div class="caption">
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6">
+                                <h3>{{ item.nome }}</h3>
+                            </div>
+                            <div class="col-md-6 col-xs-6 price">
+                                <h3>
+                                    <label>R${{ item.preco }},00</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <p>{{ item.descricao }}</p>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6">
+                                <h3>Atualização</h3>
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <h3>{{ item.data_atualizacao | date:'dd/MM/yyyy' }}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6">
+                                <a class="btn btn-primary btn-product block" ui-sref="produto.detalhes({id: item.$id})">
+                                    <span class=" glyphicon glyphicon-list-alt"></span> 
+                                    Detalhes</a> 
+                            </div>
+                        </div>
+
+                        <p> </p>
+                    </div>
+                </div>
+            </div>    
+            </div>
+            
+            
+            
+        </div> 
+
+    </div>
+</div>
+</div>
 
