@@ -16,7 +16,7 @@
       //'BlurAdmin.pages.tables',
       'BlurAdmin.pages.profile',
       'BlurAdmin.pages.usuario',
-      //'BlurAdmin.pages.registro',
+      'BlurAdmin.pages.categoria',
       'BlurAdmin.pages.produto',
       
 

@@ -113,7 +113,7 @@
                     }
                 });
             },
-            addModelo: function addModelo(modelo,callback){
+            addModelo: function addModelo(categoria,callback){
                 var modelos = this.getModelos();
                 modelos.$loaded(function(data){
                     var encontrei = false;
@@ -131,6 +131,12 @@
                             callback(result.key);
                         });
                     }
+                });
+            },
+            addCategoria: function addCategoria(categoria,callback){
+                var categorias = this.getCategorias();
+                categorias.$add(categoria).then(function(result){
+                    callback(result);       
                 });
             },
            
@@ -233,7 +239,7 @@
                             console.log(e);
                         });
                 }else{
-
+                    console.log(produto);
                     produtos.$add({
                         nome            : produto.nome,
                         imagem          : produto.imagem,
@@ -267,7 +273,11 @@
                                     console.log(keyProdutoEmpresa)    
                                     callback(keyProdutoEmpresa.key);
 
+                            }).catch(function(e){
+                                console.log(e);
                             });
+                        }).catch(function(e){
+                            console.log(e);
                         });
                 }
             },

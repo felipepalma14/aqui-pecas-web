@@ -1,0 +1,29 @@
+<div class="widgets">
+    <div style="
+                margin: auto;
+                width: 80%;
+                background: #fff;
+        ">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="Cadastro de Categoria" ba-panel-class="with-scroll">
+                <form name="vm.produtoInfoForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback" ng-class="{'has-error': vm.produtoInfoForm.nome.$invalid && (vm.produtoInfoForm.nome.$dirty || vm.produtoInfoForm.$pristine)}">
+                                <label for="nome">Nome da Categoria</label>
+                                <input type="text" class="form-control" id="nome" name="nome" placeholder="Categoria" ng-model="novaCategoria.categoria" required>
+                                <span class="help-block error-block basic-block">Preencher</span>
+                            </div>
+                            <div class="text-center">
+                                <h3>{{ feedback }}</h3>
+                                <button ng-click="cadastrarCategoria(novaCategoria)" type="button" class=" btn btn-primary">
+                                    <span aria-hidden="true"></span> Cadastrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

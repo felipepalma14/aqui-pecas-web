@@ -106,7 +106,6 @@
 
     vm.cadastrarProduto = function(produto){
       
-      console.log(produto.hasOwnProperty('$id'));
       APIService.addProduto(produto,function(retorno){
         console.log(retorno);
         if(retorno != null){
@@ -121,12 +120,11 @@
     }
 
     function addModelosInPeca(keyProdutoEmpresa){
-      var produtoModeloRef = $firebaseArray(ref.child("produtoEmpresa/" + keyProdutoEmpresa + "/modelos"));
+      //var produtoModeloRef = $firebaseArray(ref.child("produtoEmpresa/" + keyProdutoEmpresa + "/modelos"));
         for(let i=0; i < vm.carros.length; i++){
           APIService.addModelo(vm.carros[i].modelo,function(resultKeyModelo){
           var modeloRef = ref.child('modelos/'+ resultKeyModelo);
           var modeloMarcaRef = modeloRef.child("marca");
-          var modeloAnosRef = $firebaseArray(modeloRef.child("anos"));
 
             APIService.addMarca(vm.carros[i].marca,function(resultKeyMarca){
               var keyMarca = {};
@@ -134,31 +132,27 @@
                         modeloMarcaRef.set(keyMarca);                       
             });
             APIService.addAno(vm.carros[i].ano,function(resultKeyAno){
-              var keyAno = {};
-              keyAno[resultKeyAno]=true;
-              modeloAnosRef.$loaded(function(data){
-                          var encontrei = false;
-                          for(var i =0; i < data.length;i++){
-                              var keyModeloAno = Object.keys(data[i])[0];
-                              if(keyModeloAno === resultKeyAno){
-                                encontrei = true
-                                break
-                              }
-                          }
-                          if(encontrei === false){
-                             console.log("Ano nao existe, vou adc");
-                            modeloAnosRef.$add(keyAno); 
-                          }
-                          
-                      });
+              var modeloAnosRef = $firebaseArray(modeloRef.child("anos/" + resultKeyAno));
+
+              modeloAnosRef.set(true,function(error) {
+                if (error) {
+                  console.log("Data could not be saved." + error);
+                } else {
+                  console.log("Ano inserido!!")
+                }
+              });
 
             });
-            var keyProdutoModelo = {};
-            keyProdutoModelo[resultKeyModelo] = true;
-            produtoModeloRef.$add(keyProdutoModelo).then(function(result){
-                            console.log("PRoduto Modelo : " + result);
-                        });
-
+            var produtoModeloRef = ref.child("produtoEmpresa/" + keyProdutoEmpresa + "/modelos/" + resultKeyModelo);
+            //var keyProdutoModelo = {};
+            //keyProdutoModelo[resultKeyModelo] = true;
+            produtoModeloRef.set(true,function(error) {
+                if (error) {
+                  alert("Data could not be saved." + error);
+                } else {
+                  alert("Data saved successfully.");
+                }
+              });
           });
         }
       };
