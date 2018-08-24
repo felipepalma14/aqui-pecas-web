@@ -19,6 +19,7 @@
       });
     };
     
+    $scope.categorias = APIService.getCategorias();
   }
 
 })();

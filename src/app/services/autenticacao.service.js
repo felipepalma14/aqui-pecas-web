@@ -28,13 +28,22 @@
             auth.$createUserWithEmailAndPassword(usuarioInfor.email,usuarioInfor.senha)
             .then(function(userUID) {
                 usuarioInfor['uid'] = userUID.uid;
-                var refEmpresa = firebase.database().ref().child('empresas/' + userUID.uid);
-                refEmpresa.set(usuarioInfor);
-                
-                Reautenticar();
 
-                callback(userUID);
+                var storage = firebase.storage();
+                var storageRef = storage.ref();
 
+                var file = usuarioInfor.empresa.replace(" ","_")+".jpg";
+                var filesRef = storageRef.child('empresas/'+file);
+
+                filesRef.putString(usuarioInfor.imagem,'data_url').then(function(data) {
+                    var refEmpresa = firebase.database().ref().child('empresas/' + userUID.uid);
+                    usuarioInfor.imagem = data.downloadURL;
+                    refEmpresa.set(usuarioInfor);
+                    
+                    Reautenticar();
+
+                    callback(userUID);
+                });
             }).catch(function(error) {
                 callback(error);
                 console.log(error);

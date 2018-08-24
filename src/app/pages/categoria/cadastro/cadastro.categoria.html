@@ -5,7 +5,7 @@
                 background: #fff;
         ">
         <div class="col-md-12">
-            <div ba-panel ba-panel-title="Cadastro de Categoria" ba-panel-class="with-scroll">
+            <div ba-panel ba-panel-title="Gerenciamento de Categorias" ba-panel-class="with-scroll">
                 <form name="vm.produtoInfoForm" novalidate>
                     <div class="row">
                         <div class="col-md-6">
@@ -13,17 +13,24 @@
                                 <label for="nome">Nome da Categoria</label>
                                 <input type="text" class="form-control" id="nome" name="nome" placeholder="Categoria" ng-model="novaCategoria.categoria" required>
                                 <span class="help-block error-block basic-block">Preencher</span>
-                            </div>
-                            <div class="text-center">
+                                <div class="text-center">
                                 <h3>{{ feedback }}</h3>
                                 <button ng-click="cadastrarCategoria(novaCategoria)" type="button" class=" btn btn-primary">
                                     <span aria-hidden="true"></span> Cadastrar
                                 </button>
+                            
                             </div>
+                            
                         </div>
                     </div>
                 </form>
+                <div>
+            <div>
+                <div include-with-scope="app/pages/categoria/cadastro/borderedTable.html"></div>
             </div>
         </div>
+            </div>
+        </div>
+        
     </div>
 </div>

@@ -1,43 +1,21 @@
-<div class="widgets" ng-controller="produtoListagemCtrl">
 
-  <!--<div class="row">
-    <div class="col-md-12">
-      <div ba-panel ba-panel-title="Editable Rows" ba-panel-class="with-scroll">
-        <div class="horizontal-scroll">
-                <table class="table table-hover">
-                    <thead>
-                        <tr class="black-muted-bg">
-                            <th class="align-right">Marca</th>
-                            <th class="table-arr"></th>
-                            <th class="align-right">Modelo</th>
-                            <th class="table-arr"></th>
-                            <th class="align-right">Ano</th>
-                            <th class="table-arr"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="item in metricsTableData" class="no-top-border">
-                           
-                            <td class="align-right">{{item.visits}}</td>
-                            <td class="table-arr"><i ng-class="{'icon-up': item.isVisitsUp, 'icon-down': !item.isVisitsUp }"></i></td>
-                            <td class="align-right">{{item.purchases}}</td>
-                            <td class="table-arr"><i ng-class="{'icon-up': item.isPurchasesUp, 'icon-down': !item.isPurchasesUp }"></i></td>
-                            <td class="align-right">{{item.percent}}</td>
-                            <td class="table-arr"><i ng-class="{'icon-up': item.isPercentUp, 'icon-down': !item.isPercentUp }"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-      </div>
-    </div>
-  </div>
--->
+<div class="widgets" ng-controller="produtoListagemCtrl">
+    
+    
     <div class="container">
+        <div id="notebooks">
+        <input type="text" id="query" ng-model="productFilter"/>
+          <select ng-model="orderList">
+            <option value="name">By name</option>
+            <option value="-age">Newest</option>
+            <option value="age">Oldest</option>
+          </select>
+        </div>
     <div class="row">
         <div class="col-md-10">
             <div >
-                <div class="col-sm-6 col-md-4" ng-repeat="item in resultado">
-                <div class="thumbnail parent" > 
+                <div class="col-sm-6 col-md-4" ng-repeat="item in resultado | filter:productFilter">
+                    <div class="thumbnail parent" > 
                     <img src="{{ item.imagem }}" class="img-responsive">
                     <div class="caption">
                         <div class="row">
@@ -49,8 +27,15 @@
                                     <label>R${{ item.preco }},00</label>
                                 </h3>
                             </div>
+                            <div class="col-md-6 col-xs-6">
+                                <h3>Disponível</h3>
+                            </div>
+                            <div class="col-md-6 col-xs-6 price">
+                                <h3>
+                                    <label>{{ item.isDisponivel?'Sim':'Não'}} </label>
+                                </h3>
+                            </div>
                         </div>
-                        <p>{{ item.descricao }}</p>
                         <div class="row">
                             <div class="col-md-6 col-xs-6">
                                 <h3>Atualização</h3>
@@ -69,12 +54,10 @@
 
                         <p> </p>
                     </div>
-                </div>
-            </div>    
+                    </div>
+                </div>    
             </div>
-            
-            
-            
+           
         </div> 
 
     </div>

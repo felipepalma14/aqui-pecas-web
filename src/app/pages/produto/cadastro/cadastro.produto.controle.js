@@ -105,7 +105,7 @@
     };
 
     vm.cadastrarProduto = function(produto){
-      
+      console.log(produto);
       APIService.addProduto(produto,function(retorno){
         console.log(retorno);
         if(retorno != null){
@@ -129,14 +129,14 @@
             APIService.addMarca(vm.carros[i].marca,function(resultKeyMarca){
               var keyMarca = {};
               keyMarca[resultKeyMarca]=true;
-                        modeloMarcaRef.set(keyMarca);                       
+              modeloMarcaRef.set(keyMarca);                       
             });
             APIService.addAno(vm.carros[i].ano,function(resultKeyAno){
-              var modeloAnosRef = $firebaseArray(modeloRef.child("anos/" + resultKeyAno));
+              var modeloAnosRef = modeloRef.child("anos/" + resultKeyAno);
 
               modeloAnosRef.set(true,function(error) {
                 if (error) {
-                  console.log("Data could not be saved." + error);
+                  console.log("ERRO: Verificar os dados" + error);
                 } else {
                   console.log("Ano inserido!!")
                 }

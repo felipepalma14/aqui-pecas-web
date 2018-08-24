@@ -1,0 +1,19 @@
+<div class="horizontal-scroll">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Categoria</th>
+      <th>Ação</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in categorias">
+      <td ng-class="nowrap">{{item.categoria}}</td>
+      <td class="align-center" >
+        <button class="btn btn-infor btn-raised"  ng-click="">Editar</button>
+        <button class="btn btn-danger btn-raised"  ng-click="">Remover</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

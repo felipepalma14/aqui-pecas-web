@@ -6,9 +6,10 @@
         .factory('APIService', APIService);
 
     APIService.$inject = ['$http', '$rootScope','AuthenticationService',
-                         '$timeout','$firebaseArray','$firebaseObject'];
+                         '$timeout','$firebaseArray','$firebaseObject','$firebaseStorage'];
     
-    function APIService($http, $rootScope,AuthenticationService, $timeout,$firebaseArray,$firebaseObject) {
+    function APIService($http, $rootScope,AuthenticationService,$timeout,$firebaseArray,
+        $firebaseObject,$firebaseStorage) {
         var ref = firebase.database().ref();
         var service = {
             getPecaPorEmpresa: function getPecaPorEmpresa(produtoKey,callback){
@@ -106,31 +107,17 @@
                     }
                     if(encontrei === false){
                         anos.$add(ano).then(function(result){
-                            //console.log(result.key);
-                            
                              callback(result.key);
                         });
                     }
                 });
             },
-            addModelo: function addModelo(categoria,callback){
+            addModelo: function addModelo(modelo,callback){
                 var modelos = this.getModelos();
                 modelos.$loaded(function(data){
-                    var encontrei = false;
-                    for(var i =0; i < data.length;i++){
-                        
-                        if(data[i].codigo === modelo.codigo){
-                            encontrei = true;
-                             callback(data[i].$id);
-                        }
-                    }
-                    if(encontrei === false){
-                        modelos.$add(modelo).then(function(result){
-                            //console.log(result.key);
-                            
-                            callback(result.key);
-                        });
-                    }
+                    modelos.$add(modelo).then(function(result){
+                        callback(result.key);
+                    });                    
                 });
             },
             addCategoria: function addCategoria(categoria,callback){
@@ -213,40 +200,17 @@
                 keyCategoria[produto.categoria.$id] = true;
                 produto.categoria = keyCategoria;
 
+                 var storage = firebase.storage();
+                 var storageRef = storage.ref();
+
                 if(produto.hasOwnProperty("$id")){
-                    var produtoEmpresaRef = $firebaseArray(ref.child("produtoEmpresa"));
-                    var produtoEmpresa = {};
-                    produtoEmpresa['nome']       = produto.nome;
-                    produtoEmpresa['imagem']     = produto.imagem;
-                    produtoEmpresa['referencia'] = produto.referencia;
-                    produtoEmpresa['categoria']  = produto.categoria;
-                    produtoEmpresa['empresaKey'] = AuthenticationService.GetCurrentUser().uid;
-                    produtoEmpresa['data_atualizacao'] = firebase.database.ServerValue.TIMESTAMP;
-                    produtoEmpresa['descricao']  = produto.descricao;
-                    produtoEmpresa['produtoKey'] = produto.$id;
-                    produtoEmpresa['isDisponivel'] = produto.isDisponivel;
-                    produtoEmpresa['preco']      = produto.preco;
+                    var file = produto.nome.replace(" ","_")+".jpg";
 
-                    
-                    produtoEmpresaRef
-                        .$add(produtoEmpresa)
-                        .then(function(keyProdutoEmpresa){ 
-                            console.log(produto); 
-                            console.log(keyProdutoEmpresa)    
-                            callback(keyProdutoEmpresa.key);
-
-                        }).catch(function(e){
-                            console.log(e);
-                        });
-                }else{
-                    console.log(produto);
-                    produtos.$add({
-                        nome            : produto.nome,
-                        imagem          : produto.imagem,
-                        referencia      : produto.referencia,
-                        categoria       : produto.categoria,
-                        data_criacao    : firebase.database.ServerValue.TIMESTAMP
-                        }).then(function(result){
+                    var filesRef = storageRef.child('produtos/'+file);
+                    filesRef.putString(produto.imagem,'data_url').then(function(data) {
+                       //url of storage file 
+                            var downloadURL = data.downloadURL;
+                            produto.imagem = downloadURL;
                             var produtoEmpresaRef = $firebaseArray(ref.child("produtoEmpresa"));
                             var produtoEmpresa = {};
                             produtoEmpresa['nome']       = produto.nome;
@@ -256,29 +220,72 @@
                             produtoEmpresa['empresaKey'] = AuthenticationService.GetCurrentUser().uid;
                             produtoEmpresa['data_atualizacao'] = firebase.database.ServerValue.TIMESTAMP;
                             produtoEmpresa['descricao']  = produto.descricao;
-                            produtoEmpresa['produtoKey'] = result.key;
+                            produtoEmpresa['produtoKey'] = produto.$id;
                             produtoEmpresa['isDisponivel'] = produto.isDisponivel;
                             produtoEmpresa['preco']      = produto.preco;
 
-                            console.log(produto);
-
-                            var produtosRef = ref.child('produtos/' + result.key + '/empresas');
-                            var produtosRefArray = $firebaseArray(produtosRef);
-                            //TESTE ADD KEY EMPRESA em PRODUTO
-                            //produtosRefArray.$add(AuthenticationService.currentUser.uid);
-                               
                             produtoEmpresaRef
                                 .$add(produtoEmpresa)
-                                .then(function(keyProdutoEmpresa){  
+                                .then(function(keyProdutoEmpresa){ 
+                                    console.log(produto); 
                                     console.log(keyProdutoEmpresa)    
                                     callback(keyProdutoEmpresa.key);
 
+                                }).catch(function(e){
+                                    console.log(e);
+                                });
+
+                        });     
+                    
+                }else{
+                    var file = produto.nome.replace(" ","_")+".jpg";
+                    var filesRef = storageRef.child('produtos/'+file);
+
+                    filesRef.putString(produto.imagem,'data_url').then(function(data) {
+                      
+                            produto.imagem = data.downloadURL;
+                            produtos.$add({
+                                nome            : produto.nome,
+                                imagem          : produto.imagem,
+                                referencia      : produto.referencia,
+                                categoria       : produto.categoria,
+                                data_criacao    : firebase.database.ServerValue.TIMESTAMP
+                            }).then(function(result){
+                                var produtoEmpresaRef = $firebaseArray(ref.child("produtoEmpresa"));
+                                var produtoEmpresa = {};
+                                produtoEmpresa['nome']       = produto.nome;
+                                produtoEmpresa['imagem']     = produto.imagem;
+                                produtoEmpresa['referencia'] = produto.referencia;
+                                produtoEmpresa['categoria']  = produto.categoria;
+                                produtoEmpresa['empresaKey'] = AuthenticationService.GetCurrentUser().uid;
+                                produtoEmpresa['data_atualizacao'] = firebase.database.ServerValue.TIMESTAMP;
+                                produtoEmpresa['descricao']  = produto.descricao;
+                                produtoEmpresa['produtoKey'] = result.key;
+                                produtoEmpresa['isDisponivel'] = produto.isDisponivel;
+                                produtoEmpresa['preco']      = produto.preco;
+
+                                console.log(produto);
+
+                                var produtosRef = ref.child('produtos/' + result.key + '/empresas');
+                                var produtosRefArray = $firebaseArray(produtosRef);
+                                //TESTE ADD KEY EMPRESA em PRODUTO
+                                //produtosRefArray.$add(AuthenticationService.currentUser.uid);
+                                   
+                                produtoEmpresaRef
+                                    .$add(produtoEmpresa)
+                                    .then(function(keyProdutoEmpresa){  
+                                        console.log(keyProdutoEmpresa)    
+                                        callback(keyProdutoEmpresa.key);
+
+                                }).catch(function(e){
+                                    console.log(e);
+                                });
                             }).catch(function(e){
                                 console.log(e);
                             });
-                        }).catch(function(e){
-                            console.log(e);
-                        });
+                                
+                    });
+                    
                 }
             },
             addModelosPeca : function addModelosPeca(carros, refProdutoEmpresa,callback){
